@@ -25,6 +25,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity"/>
         </activity>
+
+        <activity android:name=".Activities.SettingsActivity"
+            android:label="Sort_by"/>
     </application>
 
 </manifest>

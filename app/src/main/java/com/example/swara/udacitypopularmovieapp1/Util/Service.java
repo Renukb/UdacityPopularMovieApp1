@@ -6,14 +6,10 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public class Service {
+public interface Service {
     @GET("movie/popular")
-    public Call<MovieResponse> getPopularMovies(@Query("api_key") String apiKey) {
-        return null;
-    }
+   Call<MovieResponse> getPopularMovies(@Query("api_key") String apiKey);
 
     @GET("movie/top_rated")
-    Call<MovieResponse> getTopRatedMovies(@Query("api_key") String apiKey) {
-        return null;
-    }
+    Call<MovieResponse> getTopRatedMovies(@Query("api_key") String apiKey);
 }

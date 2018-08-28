@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:layout_margin="5dp"
         card_view:cardCornerRadius="5dp">
 
         <RelativeLayout
@@ -18,10 +19,12 @@
             
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="160dp"
                 android:id="@+id/imageView"
-                android:background="?attr/selectableItemBackground"/>
-            
+                android:contentDescription="@string/movie_image"
+                android:background="?attr/selectableItemBackground"
+                android:scaleType="fitXY"/>
+
 
         </RelativeLayout>
 
