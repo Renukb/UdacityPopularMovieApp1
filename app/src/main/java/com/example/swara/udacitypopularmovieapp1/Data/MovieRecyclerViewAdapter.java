@@ -3,6 +3,7 @@ package com.example.swara.udacitypopularmovieapp1.Data;
 import android.content.Context;
 import android.content.Intent;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     private Context context;
     private List<Movie> movieList;
-    private LayoutInflater inflater;
+
 
     public MovieRecyclerViewAdapter(Context context, List<Movie>movieList){
         this.context=context;
@@ -33,16 +34,18 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
 
     @Override
-    public MovieRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+    public MovieRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.movie_row, viewGroup, false);
-        final ViewHolder viewHolder = new ViewHolder(view);
-        return new ViewHolder(view);
+        LayoutInflater inflater =LayoutInflater.from(context);
+
+        View view = inflater.inflate(R.layout.movie_row,null);
+        ViewHolder holder = new ViewHolder(view);
+        return  holder;
 
     }
 
     @Override
-    public void onBindViewHolder(final MovieRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieRecyclerViewAdapter.ViewHolder holder, int position) {
 
         holder.title.setText(movieList.get(position).getOriginalTitle());
         String vote = Double.toString(movieList.get(position).getVoteAverage());
@@ -63,13 +66,14 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView title, userRating;
+        public TextView title, userRating,overView;
         public ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView)itemView.findViewById(R.id.movie_title);
             userRating = (TextView) itemView.findViewById(R.id.movie_userRating);
+            overView = (TextView)itemView.findViewById(R.id.movie_description);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
 
             itemView.setOnClickListener(new View.OnClickListener() {

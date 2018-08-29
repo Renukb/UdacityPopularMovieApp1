@@ -37,7 +37,7 @@ public class DetailMovieActivity extends AppCompatActivity {
             String mReleaseDate = getIntent().getExtras().getString("release_date");
 
             Picasso.with(this)
-                    .load(imageView)
+                    .load("http://image.tmdb.org/t/p/w342" + imageView)
                     .into(mImageView);
 
             movieName.setText(mName);

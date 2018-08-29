@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private MovieRecyclerViewAdapter mAdapter;
     private List<Movie> movieList;
     public static final String LOG_TAG= MovieRecyclerViewAdapter.class.getName();
+    public static final String API_KEY = BuildConfig.ApiKey;
+    public static final String popular_movie = "https://api.themoviedb.org/3/movie/popular?api_key=API_KEY&language=en-US&page=1";
+    public static final String topRated_movie = "https://api.themoviedb.org/3/movie/top_rated?api_key=API_KEY&language=en-US&page=1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         movieList = new ArrayList<>();
+        mAdapter = new MovieRecyclerViewAdapter(this,movieList);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         loadJSON();
         loadJSON1();
@@ -55,26 +60,27 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 if (BuildConfig.ApiKey.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please obtain own API KEY ", Toast.LENGTH_SHORT).show();
                     return;
+                }else {
+
+                    Client client = new Client();
+                    Service service = client.getClient().create(Service.class);
+                    Call<MovieResponse> call = service.getPopularMovies(popular_movie);
+                    call.enqueue(new Callback<MovieResponse>() {
+                        @Override
+                        public void onResponse(@NonNull Call<MovieResponse> call,@NonNull Response<MovieResponse> response) {
+                            List<Movie> movies = response.body().getResults();
+                            mRecyclerView.setAdapter(new MovieRecyclerViewAdapter(getApplicationContext(), movies));
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<MovieResponse> call, Throwable t) {
+                            Log.d("Error", t.getMessage());
+                            Toast.makeText(MainActivity.this, "Error to fetch data", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
                 }
-
-                Client client = new Client();
-                Service service = client.getClient().create(Service.class);
-                Call<MovieResponse> call = service.getPopularMovies(BuildConfig.ApiKey);
-                call.enqueue(new Callback<MovieResponse>() {
-                    @Override
-                    public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                        List<Movie> movies = response.body().getResults();
-                        mRecyclerView.setAdapter(new MovieRecyclerViewAdapter(getApplicationContext(), movies));
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<MovieResponse> call, Throwable t) {
-                        Log.d("Error", t.getMessage());
-                        Toast.makeText(MainActivity.this, "Error to fetch data", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
             } catch (Exception e) {
                 Log.d("Error", e.getMessage());
                 Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
@@ -88,26 +94,27 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             if (BuildConfig.ApiKey.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please obtain own API KEY ", Toast.LENGTH_SHORT).show();
                 return;
+            }else {
+
+                Client client = new Client();
+                Service service = client.getClient().create(Service.class);
+                Call<MovieResponse> call = service.getTopRatedMovies(topRated_movie);
+                call.enqueue(new Callback<MovieResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MovieResponse> call,@NonNull Response<MovieResponse> response) {
+                       List<Movie> movies = response.body().getResults();
+                        mRecyclerView.setAdapter(new MovieRecyclerViewAdapter(getApplicationContext(), movies));
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<MovieResponse> call, Throwable t) {
+                        Log.d("Error", t.getMessage());
+                        Toast.makeText(MainActivity.this, "Error to fetch data", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
             }
-
-            Client client = new Client();
-            Service service = client.getClient().create(Service.class);
-            Call<MovieResponse> call = service.getTopRatedMovies(BuildConfig.ApiKey);
-            call.enqueue(new Callback<MovieResponse>() {
-                @Override
-                public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                    List<Movie> movies = response.body().getResults();
-                    mRecyclerView.setAdapter(new MovieRecyclerViewAdapter(getApplicationContext(), movies));
-
-                }
-
-                @Override
-                public void onFailure(Call<MovieResponse> call, Throwable t) {
-                    Log.d("Error", t.getMessage());
-                    Toast.makeText(MainActivity.this, "Error to fetch data", Toast.LENGTH_SHORT).show();
-
-                }
-            });
         } catch (Exception e) {
             Log.d("Error", e.getMessage());
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();

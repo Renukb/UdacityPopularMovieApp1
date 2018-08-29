@@ -39,7 +39,7 @@ public class Movie{
             this.voteAverage=voteAverage;
 
         }
-        String baseImageUrl ="http://image.tmdb.org/t/p/w500";
+        private  static final String baseImageUrl ="http://image.tmdb.org/t/p/w500";
     public String getPosterPath() {
         return "http://image.tmdb.org/t/p/w500" + posterPath;
     }
