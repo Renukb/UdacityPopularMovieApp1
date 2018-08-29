@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         private void loadJSON(){
 
             try {
-                if (BuildConfig.ApiKey.isEmpty()) {
+                if (API_KEY.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please obtain own API KEY ", Toast.LENGTH_SHORT).show();
                     return;
                 }else {
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private void loadJSON1(){
 
         try {
-            if (BuildConfig.ApiKey.isEmpty()) {
+            if (API_KEY.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please obtain own API KEY ", Toast.LENGTH_SHORT).show();
                 return;
             }else {
